@@ -4,6 +4,7 @@ import {motion} from 'framer-motion';
 import {ChevronDown, Filter} from 'lucide-react';
 import {FilterState} from '../types';
 import axios from "axios";
+import {fetchProducts} from "../api/Product.ts";
 
 // const products = Array.from({ length: 12 }, (_, i) => ({
 //   id: i + 1,
@@ -28,14 +29,20 @@ export default function ShopPage() {
         priceRange: [0, 1000],
         category: ''
     });
+
     const [products, setProductData] = useState([]);
+
+    async function fetchAll() {
+        const data = await fetchProducts()
+        if (data){
+            setProductData(data)
+        }
+    }
 
     //load data
     useEffect(() => {
-        axios.get("http://localhost:3003/api/v1/products/all").then((response) => {
-            console.log(response.data)
-            setProductData(response.data);
-        });
+      fetchAll();
+
     }, []);
 
 
@@ -167,16 +174,16 @@ export default function ShopPage() {
                                 whileHover={{y: -10}}
                                 className="group"
                             >
-                                <Link to={`/product/${product.id}`}>
+                                <Link to={`/product/${product._id}`}>
                                     <div className="aspect-[3/4] relative overflow-hidden rounded-lg mb-4">
                                         <img
-                                            src={product.image}
+                                            src={product.images[0]}
                                             alt={product.name}
                                             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
                                     </div>
                                     <h3 className="font-semibold">{product.name}</h3>
-                                    {/*<p className="text-gray-600">${product.price.toFixed(2)}</p>*/}
+                                    <p className="text-gray-600">${product.variations[0].price.toFixed(2)}</p>
                                 </Link>
                             </motion.div>
                         ))}

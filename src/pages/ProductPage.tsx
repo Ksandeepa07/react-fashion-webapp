@@ -1,28 +1,12 @@
 import {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import {motion} from 'framer-motion';
 import {Heart, Minus, Plus} from 'lucide-react';
 import {useCart} from '../context/CartContext';
 import toast from 'react-hot-toast';
 import axios from "axios";
-
-// Mock product data
-const products = {
-    id: 1,
-    name: 'Classic White T-Shirt',
-    price: 99.99,
-    description: 'A timeless classic that never goes out of style. Made from 100% organic cotton for maximum comfort and durability.',
-    images: [
-        'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1496747611176-843db0904432?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1552374196-1ab2a1c593e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    ],
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    colors: ['White', 'Black', 'Gray', 'Navy'],
-    category: 'T-Shirts',
-    brand: 'FASHION'
-};
+import {fetchProducts, fetchProductsById} from "../api/Product.ts";
+import {Product} from "../types";
 
 const recommendations = Array.from({length: 4}, (_, i) => ({
     id: i + 2,
@@ -45,16 +29,32 @@ export default function ProductPage() {
     const [selectedColor, setSelectedColor] = useState('');
     const [quantity, setQuantity] = useState(1);
 
-    const [product, setProductData] = useState({});
+    const [product, setProductData] = useState<Product>();
+    const [recommendedProduct, setRecommendedProductData] = useState<Product[]>();
 
 
-  //load data
+    //fetch single product
+    async function fetchProduct() {
+        const data = await fetchProductsById(id)
+        if (data){
+            setProductData(data)
+        }
+    }
+
+    // fetch all product
+    async function fetchAll() {
+        const data = await fetchProducts()
+        if (data){
+            setRecommendedProductData(data)
+        }
+    }
+
+    //load data
     useEffect(() => {
-        axios.get(`http://localhost:3003/api/v1/products/getProductById/${id}`).then((response) => {
-            console.log(response.data)
-            setProductData(response.data);
-        });
+           fetchProduct();
+           fetchAll();
     }, []);
+
     const handleAddToCart = () => {
         if (!selectedSize || !selectedColor) {
             toast.error('Please select size and color');
@@ -62,7 +62,7 @@ export default function ProductPage() {
         }
 
         addToCart({
-            ...products,
+            ...product,
             quantity,
             selectedSize,
             selectedColor
@@ -77,37 +77,38 @@ export default function ProductPage() {
                 {/* Product Images */}
                 <div className="space-y-4">
                     <div className="aspect-square relative overflow-hidden rounded-lg">
+                        {/*<h1>{product?.images[0]}</h1>*/}
                         <img
-                            src={product.image}
-                            // src={product.image[selectedImage]}
-                            alt={product.name}
+                            // src={product?.images[0]}
+                            src={product?.images[selectedImage]}
+                            alt={product?.name}
                             className="absolute inset-0 w-full h-full object-cover"
                         />
                     </div>
-                    {/*<div className="grid grid-cols-4 gap-4">*/}
-                    {/*    {product.image.map((image, index) => (*/}
-                    {/*        <button*/}
-                    {/*            key={index}*/}
-                    {/*            onClick={() => setSelectedImage(index)}*/}
-                    {/*            className={`aspect-square relative overflow-hidden rounded-lg ${*/}
-                    {/*                selectedImage === index ? 'ring-2 ring-black' : ''*/}
-                    {/*            }`}*/}
-                    {/*        >*/}
-                    {/*            <img*/}
-                    {/*                src={image}*/}
-                    {/*                alt={`${product.name} ${index + 1}`}*/}
-                    {/*                className="absolute inset-0 w-full h-full object-cover"*/}
-                    {/*            />*/}
-                    {/*        </button>*/}
-                    {/*    ))}*/}
-                    {/*</div>*/}
+                    <div className="grid grid-cols-4 gap-4">
+                        {product?.images.map((image, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedImage(index)}
+                                className={`aspect-square relative overflow-hidden rounded-lg ${
+                                    selectedImage === index ? 'ring-2 ring-black' : ''
+                                }`}
+                            >
+                                <img
+                                    src={image}
+                                    alt={`${product?.name} ${index + 1}`}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Product Info */}
                 <div className="space-y-6">
                     <div>
-                        <h1 className="text-3xl font-bold">{product.name}</h1>
-                        {/*<p className="text-2xl mt-2">${product.price}</p>*/}
+                        <h1 className="text-3xl font-bold">{product?.name}</h1>
+                        <p className="text-2xl mt-2">${product?.variations[0].price}</p>
                     </div>
 
                     <div>
@@ -115,7 +116,7 @@ export default function ProductPage() {
                         <div className="grid grid-cols-5 gap-2">
                             {product?.variations?.map(variation => (
                                 <button
-                                    key={variation.id}
+                                    // key={variation.id}
                                     onClick={() => setSelectedSize(variation.size)}
                                     className={`py-2 border rounded ${
                                         selectedSize === variation.size
@@ -134,7 +135,7 @@ export default function ProductPage() {
                         <div className="grid grid-cols-4 gap-2">
                             {product?.variations?.map(variation => (
                                 <button
-                                    key={variation.id}
+                                    key={variation._id}
                                     onClick={() => setSelectedColor(variation.color)}
                                     className={`py-2 border rounded ${
                                         selectedColor === variation.color
@@ -181,7 +182,7 @@ export default function ProductPage() {
 
                     <div>
                         <h3 className="font-semibold mb-2">Description</h3>
-                        <p className="text-gray-600">{product.description}</p>
+                        <p className="text-gray-600">{product?.description}</p>
                     </div>
                 </div>
             </div>
@@ -190,21 +191,25 @@ export default function ProductPage() {
             <div className="mt-20">
                 <h2 className="text-2xl font-bold mb-8">You May Also Like</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {recommendations.map(product => (
+                    {recommendedProduct?.map(product => (
                         <motion.div
-                            key={product.id}
+                            key={product._id}
                             whileHover={{y: -10}}
                             className="group"
                         >
+                            <Link to={`/product/${product._id}`}>
                             <div className="aspect-[3/4] relative overflow-hidden rounded-lg mb-4">
                                 <img
-                                    src={product.image}
+                                    src={product.images[0]}
                                     alt={product.name}
                                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
                             </div>
+
                             <h3 className="font-semibold">{product.name}</h3>
-                            {/*<p className="text-gray-600">${product.price}</p>*/}
+                            <p className="text-gray-600">${product.variations[0].price}</p>
+                            </Link>
+
                         </motion.div>
                     ))}
                 </div>
