@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import { CartItem } from '../types';
 
 interface CartState {
@@ -27,12 +27,11 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       const existingItem = state.cartItems.find(
         item => 
           item.id === action.payload.id && 
-          item.selectedSize === action.payload.selectedSize &&
-          item.selectedColor === action.payload.selectedColor
+          item.selectedSize === action.payload.selectedSize
       );
 
-      if (existingItem) {
-        return {
+       if (existingItem) {
+         return {
           ...state,
           cartItems: state.cartItems.map(item =>
             item === existingItem

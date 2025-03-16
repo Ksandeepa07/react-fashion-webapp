@@ -2,52 +2,37 @@ import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {motion} from 'framer-motion';
 import {ChevronDown, Filter} from 'lucide-react';
-import {FilterState} from '../types';
-import axios from "axios";
+import {FilterState, Product} from '../types';
 import {fetchProducts} from "../api/Product.ts";
+import ProductSkeleton from "../components/skeltons/ProductSkeleton.tsx";
 
-// const products = Array.from({ length: 12 }, (_, i) => ({
-//   id: i + 1,
-//   name: `Fashion Product ${i + 1}`,
-//   price: 99.99 + i * 10,
-//   image: `https://images.unsplash.com/photo-${
-//       i % 4 === 0 ? '1515886657613-9f3515b0c78f' :
-//           i % 4 === 1 ? '1496747611176-843db0904432' :
-//               i % 4 === 2 ? '1552374196-1ab2a1c593e9' :
-//                   '1549298916-b41d501d3772'
-//   }?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`,
-//   category: i % 3 === 0 ? 'Women' : i % 3 === 1 ? 'Men' : 'Accessories',
-//   colors: ['Black', 'White', 'Blue'],
-//   sizes: ['S', 'M', 'L', 'XL']
-// }));
 
 export default function ShopPage() {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filters, setFilters] = useState<FilterState>({
-        colors: [],
         sizes: [],
         priceRange: [0, 1000],
         category: ''
     });
 
-    const [products, setProductData] = useState([]);
+    const [products, setProductData] = useState<Product[]>([]);
 
     async function fetchAll() {
         const data = await fetchProducts()
-        if (data){
+        if (data) {
             setProductData(data)
         }
     }
 
     //load data
     useEffect(() => {
-      fetchAll();
+        fetchAll();
+
 
     }, []);
 
 
     const categories = ['All', 'Women', 'Men', 'Accessories'];
-    const availableColors = ['Black', 'White', 'Blue', 'Red', 'Green'];
     const availableSizes = ['XS', 'S', 'M', 'L', 'XL'];
 
     const toggleFilter = (type: keyof FilterState, value: string) => {
@@ -66,13 +51,22 @@ export default function ShopPage() {
         });
     };
 
+
+    // const filteredProducts = products.filter(product => {
+    //     if (filters.category && product.category !== filters.category) return false;
+    //     if (filters.colors.length && !filters.colors.some(color => product.colors.includes(color))) return false;
+    //     if (filters.sizes.length && !filters.sizes.some(size => product.sizes.includes(size))) return false;
+    //     if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
+    //     return true;
+    // });
+
     const filteredProducts = products.filter(product => {
         if (filters.category && product.category !== filters.category) return false;
-        if (filters.colors.length && !filters.colors.some(color => product.colors.includes(color))) return false;
-        if (filters.sizes.length && !filters.sizes.some(size => product.sizes.includes(size))) return false;
-        if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
+        // if (filters.sizes.length && !filters.sizes.some(size => (product.sizes ?? []).includes(size))) return false;
+        // if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
         return true;
     });
+
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -98,22 +92,6 @@ export default function ShopPage() {
                         </div>
                     </div>
 
-                    <div>
-                        <h3 className="font-semibold mb-4">Colors</h3>
-                        <div className="space-y-2">
-                            {availableColors.map(color => (
-                                <label key={color} className="flex items-center space-x-2">
-                                    <input
-                                        type="checkbox"
-                                        checked={filters.colors.includes(color)}
-                                        onChange={() => toggleFilter('colors', color)}
-                                        className="rounded"
-                                    />
-                                    <span>{color}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </div>
 
                     <div>
                         <h3 className="font-semibold mb-4">Sizes</h3>
@@ -167,27 +145,35 @@ export default function ShopPage() {
 
                 {/* Product Grid */}
                 <div className="flex-1">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredProducts.map(product => (
-                            <motion.div
-                                key={product.id}
-                                whileHover={{y: -10}}
-                                className="group"
-                            >
-                                <Link to={`/product/${product._id}`}>
-                                    <div className="aspect-[3/4] relative overflow-hidden rounded-lg mb-4">
-                                        <img
-                                            src={product.images[0]}
-                                            alt={product.name}
-                                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
-                                    </div>
-                                    <h3 className="font-semibold">{product.name}</h3>
-                                    <p className="text-gray-600">${product.variations[0].price.toFixed(2)}</p>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </div>
+                    {products.length > 0 ?
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredProducts.map(product => (
+                                <motion.div
+                                    key={product._id}
+                                    whileHover={{y: -10}}
+                                    className="group"
+                                >
+                                    <Link to={`/product/${product._id}`}>
+                                        <div className="aspect-[3/4] relative overflow-hidden rounded-lg mb-4">
+                                            <img
+                                                src={product.images[0]}
+                                                alt={product.name}
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        </div>
+                                        <h3 className="font-semibold">{product.name}</h3>
+                                        <p className="text-gray-600">${product.variations[0].price.toFixed(2)}</p>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        :
+
+                        <ProductSkeleton/>
+
+                    }
+
                 </div>
             </div>
         </div>

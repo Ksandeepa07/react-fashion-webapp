@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Minus, Plus, X } from 'lucide-react';
@@ -8,7 +8,7 @@ export default function CartPage() {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
 
   const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  const shipping = subtotal > 100 ? 0 : 10;
+  const shipping = subtotal > 10000 ? 0 : 250;
   const total = subtotal + shipping;
 
   if (cartItems.length === 0) {
@@ -33,7 +33,8 @@ export default function CartPage() {
         <div className="md:col-span-2 space-y-6">
           {cartItems.map((item) => (
             <motion.div
-              key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
+              // key={`${item._id}-${item.selectedSize}`}
+              key={`${item._id}-${item.selectedSize}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -60,7 +61,7 @@ export default function CartPage() {
 
                 <div className="mt-2 text-sm text-gray-600">
                   <p>Size: {item.selectedSize}</p>
-                  <p>Color: {item.selectedColor}</p>
+                  {/*<p>Color: {item.selectedColor}</p>*/}
                 </div>
 
                 <div className="mt-4 flex items-center justify-between">
@@ -79,7 +80,7 @@ export default function CartPage() {
                       <Plus size={16} />
                     </button>
                   </div>
-                  <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-semibold">LKR {(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               </div>
             </motion.div>
@@ -92,7 +93,7 @@ export default function CartPage() {
           <div className="space-y-4">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>LKR {subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
@@ -101,7 +102,7 @@ export default function CartPage() {
             <div className="border-t pt-4">
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>LKR {total.toFixed(2)}</span>
               </div>
             </div>
           </div>

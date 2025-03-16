@@ -31,13 +31,14 @@ export interface ProductVariation {
 }
 
 export interface CartItem extends Product {
+  id:number;
   quantity: number;
   selectedSize: string;
-  selectedColor: string;
+  price:number;
+  // selectedColor: string;
 }
 
 export interface FilterState {
-  colors: string[];
   sizes: string[];
   priceRange: [number, number];
   category: string;
