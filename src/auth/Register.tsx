@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import {Mail, Lock, ArrowRight, Check} from 'lucide-react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {saveRegister} from "../api/Auth.ts";
 import bcrypt from "bcryptjs";
 import toast from "react-hot-toast";
 
 const Register = () => {
+    const navigate=useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,10 +16,11 @@ const Register = () => {
         e.preventDefault();
 
         if (password === confirmPassword) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const data = await saveRegister({ email, password: hashedPassword, role });
-            let result = JSON.parse(data);
-            console.log(result.data);
+             let isRegistered=await saveRegister({ email, password, role });
+            if (isRegistered){
+                navigate('/')
+            }
+
         }else{
             toast.error("Password didn't match with confirm password")
         }

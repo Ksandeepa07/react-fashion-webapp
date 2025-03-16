@@ -35,7 +35,7 @@ export interface CartItem extends Product {
   quantity: number;
   selectedSize: string;
   price:number;
-  // selectedColor: string;
+  productId:string;
 }
 
 export interface Auth {
@@ -48,4 +48,19 @@ export interface FilterState {
   sizes: string[];
   priceRange: [number, number];
   category: string;
+}
+
+export interface Order {
+  email:string;
+  firstName: string;
+  lastName: string;
+  address:string;
+  city:string;
+  postalCode:string;
+  products: {
+    productId: string;
+    quantity: number;
+    size: string;
+  }[];
+  totalPrice:number;
 }

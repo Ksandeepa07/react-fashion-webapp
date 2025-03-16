@@ -1,14 +1,22 @@
 import { useState } from 'react';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import {Link} from "react-router-dom";
+import {saveLogin, saveRegister} from "../api/Auth.ts";
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
+    const navigate=useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle login logic here
+        let isLogged=await saveLogin({email, password});
+         if (isLogged){
+            navigate('/')
+        }
+
     };
 
     return (
@@ -43,20 +51,6 @@ const Login = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 focus:border-black focus:ring-0 text-sm transition duration-200"
                                 placeholder="Password"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div className="space-y-2">
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"/>
-                            <input
-                                type="confirm password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 focus:border-black focus:ring-0 text-sm transition duration-200"
-                                placeholder="confirm password"
                                 required
                             />
                         </div>

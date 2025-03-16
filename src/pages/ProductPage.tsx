@@ -56,15 +56,16 @@ export default function ProductPage() {
             return;
         }
 
+        let productId=id
         id = id + selectedSize;
-
 
         addToCart({
             ...product,
             quantity,
             selectedSize,
             price,
-            id
+            id,
+            productId
 
         });
 
