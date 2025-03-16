@@ -43,7 +43,7 @@ export default function Header() {
             >
               <Search className="w-5 h-5" />
             </button>
-            <Link to="/account" className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-300">
+            <Link to="/login" className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-300">
               <User className="w-5 h-5" />
             </Link>
             <Link 

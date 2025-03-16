@@ -38,6 +38,12 @@ export interface CartItem extends Product {
   // selectedColor: string;
 }
 
+export interface Auth {
+  name: string;
+  email: string;
+  role: string;
+}
+
 export interface FilterState {
   sizes: string[];
   priceRange: [number, number];
