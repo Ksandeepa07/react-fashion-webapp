@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
 
@@ -13,17 +12,6 @@ export default function Footer() {
             <p className="text-gray-400">
               Discover the latest trends in fashion and explore our collection of premium clothing.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-gray-400 transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="hover:text-gray-400 transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="hover:text-gray-400 transition-colors">
-                <Twitter className="w-5 h-5" />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -72,23 +60,18 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
-            <p className="text-gray-400 mb-4">
-              Subscribe to our newsletter to receive updates and exclusive offers.
-            </p>
-            <form className="space-y-4">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="w-full px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-white"
-              />
-              <button
-                type="submit"
-                className="w-full px-4 py-2 bg-white text-black rounded hover:bg-gray-200 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
+            <h3 className="text-lg font-semibold mb-4">Socials</h3>
+            <div className="flex space-x-4">
+              <a href="#" className="hover:text-gray-400 transition-colors">
+                <Facebook className="w-5 h-5"/>
+              </a>
+              <a href="#" className="hover:text-gray-400 transition-colors">
+                <Instagram className="w-5 h-5"/>
+              </a>
+              <a href="#" className="hover:text-gray-400 transition-colors">
+                <Twitter className="w-5 h-5"/>
+              </a>
+            </div>
           </div>
         </div>
 

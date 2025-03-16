@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
@@ -15,13 +15,13 @@ export default function CheckoutPage() {
     city: '',
     country: '',
     postalCode: '',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCvc: ''
+    // cardNumber: '',
+    // cardExpiry: '',
+    // cardCvc: ''
   });
 
   const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  const shipping = subtotal > 100 ? 0 : 10;
+  const shipping = subtotal > 10000 ? 0 : 250;
   const total = subtotal + shipping;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,10 +31,9 @@ export default function CheckoutPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically process the payment and create the order
     toast.success('Order placed successfully!');
-    clearCart();
-    navigate('/');
+    // clearCart();
+    // navigate('/');
   };
 
   return (
@@ -140,57 +139,57 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="border-t pt-6">
-              <h2 className="text-2xl font-bold mb-6">Payment Information</h2>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700">
-                    Card Number
-                  </label>
-                  <input
-                    type="text"
-                    id="cardNumber"
-                    name="cardNumber"
-                    value={formData.cardNumber}
-                    onChange={handleInputChange}
-                    required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                  />
-                </div>
+            {/*<div className="border-t pt-6">*/}
+            {/*  <h2 className="text-2xl font-bold mb-6">Payment Information</h2>*/}
+            {/*  <div className="space-y-4">*/}
+            {/*    <div>*/}
+            {/*      <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700">*/}
+            {/*        Card Number*/}
+            {/*      </label>*/}
+            {/*      <input*/}
+            {/*        type="text"*/}
+            {/*        id="cardNumber"*/}
+            {/*        name="cardNumber"*/}
+            {/*        value={formData.cardNumber}*/}
+            {/*        onChange={handleInputChange}*/}
+            {/*        required*/}
+            {/*        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"*/}
+            {/*      />*/}
+            {/*    </div>*/}
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="cardExpiry" className="block text-sm font-medium text-gray-700">
-                      Expiry Date
-                    </label>
-                    <input
-                      type="text"
-                      id="cardExpiry"
-                      name="cardExpiry"
-                      placeholder="MM/YY"
-                      value={formData.cardExpiry}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="cardCvc" className="block text-sm font-medium text-gray-700">
-                      CVC
-                    </label>
-                    <input
-                      type="text"
-                      id="cardCvc"
-                      name="cardCvc"
-                      value={formData.cardCvc}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/*    <div className="grid grid-cols-2 gap-4">*/}
+            {/*      <div>*/}
+            {/*        <label htmlFor="cardExpiry" className="block text-sm font-medium text-gray-700">*/}
+            {/*          Expiry Date*/}
+            {/*        </label>*/}
+            {/*        <input*/}
+            {/*          type="text"*/}
+            {/*          id="cardExpiry"*/}
+            {/*          name="cardExpiry"*/}
+            {/*          placeholder="MM/YY"*/}
+            {/*          value={formData.cardExpiry}*/}
+            {/*          onChange={handleInputChange}*/}
+            {/*          required*/}
+            {/*          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"*/}
+            {/*        />*/}
+            {/*      </div>*/}
+            {/*      <div>*/}
+            {/*        <label htmlFor="cardCvc" className="block text-sm font-medium text-gray-700">*/}
+            {/*          CVC*/}
+            {/*        </label>*/}
+            {/*        <input*/}
+            {/*          type="text"*/}
+            {/*          id="cardCvc"*/}
+            {/*          name="cardCvc"*/}
+            {/*          value={formData.cardCvc}*/}
+            {/*          onChange={handleInputChange}*/}
+            {/*          required*/}
+            {/*          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"*/}
+            {/*        />*/}
+            {/*      </div>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*</div>*/}
 
             <button
               type="submit"
@@ -207,11 +206,11 @@ export default function CheckoutPage() {
             
             <div className="space-y-4">
               {cartItems.map(item => (
-                <div key={`${item.id}-${item.selectedSize}-${item.selectedColor}`} className="flex justify-between">
+                <div key={`${item.id}-${item.selectedSize}`} className="flex justify-between">
                   <div>
                     <p className="font-medium">{item.name}</p>
                     <p className="text-sm text-gray-600">
-                      {item.selectedSize} · {item.selectedColor} · Qty: {item.quantity}
+                      {item.selectedSize} / Qty: {item.quantity}
                     </p>
                   </div>
                   <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
@@ -221,16 +220,16 @@ export default function CheckoutPage() {
               <div className="border-t pt-4 space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>LKR {subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? 'Free' : `LKR ${shipping.toFixed(2)}`}</span>
                 </div>
                 <div className="border-t pt-2">
                   <div className="flex justify-between font-semibold">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>LKR {total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
