@@ -38,7 +38,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="bg-gray-50 py-20">
+      <section className="bg-gray-50 ">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -69,34 +69,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-12 text-center">Our Team</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {[1, 2, 3, 4].map((member) => (
-            <motion.div
-              key={member}
-              whileHover={{ scale: 1.05 }}
-              className="text-center"
-            >
-              <div className="mb-4 relative overflow-hidden rounded-lg aspect-square">
-                <img
-                  src={`https://images.unsplash.com/photo-${
-                    member === 1 ? '1438761681033-6461ffad8d80' :
-                    member === 2 ? '1472099645785-5658abf4ff4e' :
-                    member === 3 ? '1494790108377-be9c29b29330' :
-                    '1507003211169-0a1dd7228f2d'
-                  }?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`}
-                  alt="Team member"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="font-semibold">Team Member {member}</h3>
-              <p className="text-gray-600">Position</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

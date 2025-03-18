@@ -20,7 +20,7 @@ function App() {
       <CartProvider>
         <div className="min-h-screen flex flex-col">
           <Header />
-          <main className="flex-grow">
+          <main className="flex-grow py-30">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/shop" element={<ShopPage />} />
@@ -28,7 +28,7 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
+              {/*<Route path="/contact" element={<ContactPage />} />*/}
               <Route path="/login" element={<Login/>} />
               <Route path="/register" element={<Register/>} />
             </Routes>

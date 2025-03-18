@@ -19,40 +19,42 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
+                <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
+                  About us
+                </Link>
+              </li>
+              <li>
                 <Link to="/shop" className="text-gray-400 hover:text-white transition-colors">
                   Shop
                 </Link>
               </li>
+
               <li>
-                <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
-                  About Us
+                <Link to="/cart" className="text-gray-400 hover:text-white transition-colors">
+                  Cart
                 </Link>
               </li>
-              <li>
-                <Link to="/contact" className="text-gray-400 hover:text-white transition-colors">
-                  Contact
-                </Link>
-              </li>
+
             </ul>
           </div>
 
           {/* Help */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Help</h3>
+            <h3 className="text-lg font-semibold mb-4">Categories</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/shipping" className="text-gray-400 hover:text-white transition-colors">
-                  Shipping Information
+                <Link to="/shop" className="text-gray-400 hover:text-white transition-colors">
+                  Mens
                 </Link>
               </li>
               <li>
-                <Link to="/returns" className="text-gray-400 hover:text-white transition-colors">
-                  Returns & Exchanges
+                <Link to="/shop" className="text-gray-400 hover:text-white transition-colors">
+                  Womens
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-gray-400 hover:text-white transition-colors">
-                  FAQ
+                <Link to="/shop" className="text-gray-400 hover:text-white transition-colors">
+                  Accessories
                 </Link>
               </li>
             </ul>

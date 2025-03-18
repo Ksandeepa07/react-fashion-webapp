@@ -52,24 +52,23 @@ export default function ShopPage() {
     };
 
 
-    // const filteredProducts = products.filter(product => {
-    //     if (filters.category && product.category !== filters.category) return false;
-    //     if (filters.colors.length && !filters.colors.some(color => product.colors.includes(color))) return false;
-    //     if (filters.sizes.length && !filters.sizes.some(size => product.sizes.includes(size))) return false;
-    //     if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
-    //     return true;
-    // });
-
     const filteredProducts = products.filter(product => {
         if (filters.category && product.category !== filters.category) return false;
-        // if (filters.sizes.length && !filters.sizes.some(size => (product.sizes ?? []).includes(size))) return false;
-        // if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
+        if (
+            filters.sizes.length &&
+            !filters.sizes.some(size =>
+                product.variations.some(variation => variation.size === size)
+            )
+        ) return false;
+
+
+        if (product.variations[0].price < filters.priceRange[0] || product.variations[0].price > filters.priceRange[1]) return false;
         return true;
     });
 
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-40">
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Filters - Desktop */}
                 <div className="hidden md:block w-64 space-y-6">
@@ -126,8 +125,8 @@ export default function ShopPage() {
                             className="w-full"
                         />
                         <div className="flex justify-between mt-2">
-                            <span>$0</span>
-                            <span>${filters.priceRange[1]}</span>
+                            <span>LKR 0.00</span>
+                            <span>LKR {filters.priceRange[1].toFixed(2)}</span>
                         </div>
                     </div>
                 </div>
@@ -162,7 +161,7 @@ export default function ShopPage() {
                                             />
                                         </div>
                                         <h3 className="font-semibold">{product.name}</h3>
-                                        <p className="text-gray-600">${product.variations[0].price.toFixed(2)}</p>
+                                        <p className="text-gray-600">LKR {product.variations[0].price.toFixed(2)}</p>
                                     </Link>
                                 </motion.div>
                             ))}

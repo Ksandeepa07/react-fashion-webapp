@@ -90,7 +90,7 @@ export default function HomePage() {
 
             {products.length > 0 ?
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                    {products.map((product) => (
+                    {products.slice(0, 4).map((product) => (
                         <Link to={`/product/${product._id}`}>
                             <motion.div
                                 key={product._id}
@@ -153,7 +153,7 @@ export default function HomePage() {
       <section className="container mx-auto px-4 mb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { title: 'Free Shipping', description: 'On orders over $100' },
+            { title: 'Free Shipping', description: 'On orders over LKR 100,000' },
             { title: 'Easy Returns', description: '30-day return policy' },
             { title: 'Secure Payment', description: '100% secure checkout' }
           ].map((feature) => (

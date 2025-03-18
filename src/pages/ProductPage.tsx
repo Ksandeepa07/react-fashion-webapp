@@ -201,7 +201,7 @@ export default function ProductPage() {
 
                 {recommendedProduct ?
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {recommendedProduct?.map(product => (
+                        {recommendedProduct.slice(0,4)?.map(product => (
                             <motion.div
                                 key={product._id}
                                 whileHover={{y: -10}}
